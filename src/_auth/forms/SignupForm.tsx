@@ -1,6 +1,11 @@
+import { Button } from "@/components/ui/button"
+
 const SignupForm = () => {
   return (
-    <div>SignupForm</div>
+    <div>
+      Signup Form
+      <Button>Sign Up</Button>
+    </div>
   )
 }
 
