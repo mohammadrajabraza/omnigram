@@ -1,19 +1,20 @@
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useState } from "react"
+import { Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
 
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input" 
-import { SignUpValidation } from "@/lib/validation"
+import { useToast } from "@/components/ui/use-toast"
+import { Input } from "@/components/ui/input"
 import Loader from "@/components/shared/Loader"
-import { Link } from "react-router-dom"
+import { SignUpValidation } from "@/lib/validation"
 import { createUserAccount } from "@/lib/appwrite/api"
-import { useState } from "react"
 
 const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
@@ -29,6 +30,11 @@ const SignUpForm = () => {
   async function onSubmit(values: z.infer<typeof SignUpValidation>) {
     setIsLoading(true);
     const newUser = await createUserAccount(values)
+    if (!newUser) {
+      toast({title: 'Sign up failed. Please try again.', variant: 'destructive'})
+    }
+
+    toast({title: 'Sign up successful.'})
     form.reset();
     setIsLoading(false)
   }
