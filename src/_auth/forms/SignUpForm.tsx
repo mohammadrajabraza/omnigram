@@ -8,9 +8,11 @@ import { Input } from "@/components/ui/input"
 import { SignUpValidation } from "@/lib/validation"
 import Loader from "@/components/shared/Loader"
 import { Link } from "react-router-dom"
+import { createUserAccount } from "@/lib/appwrite/api"
+import { useState } from "react"
 
 const SignUpForm = () => {
-  const isLoading = true;
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
@@ -24,10 +26,11 @@ const SignUpForm = () => {
   })
  
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof SignUpValidation>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof SignUpValidation>) {
+    setIsLoading(true);
+    const newUser = await createUserAccount(values)
+    form.reset();
+    setIsLoading(false)
   }
 
   return (
