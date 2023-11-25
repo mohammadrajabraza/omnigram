@@ -14,11 +14,11 @@ import { SignUpValidation } from "@/lib/validation"
 
 const SignUpForm = () => {
   const { toast } = useToast();
-  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+  const { checkAuthUser } = useUserContext();
   const navigate = useNavigate(); 
 
-  const { mutateAsync: createUserAccount, isPending: isCreatingAccount} = useCreateUserAccount();
-  const { mutateAsync: signInAccount, isPending: isSigningIn} = useSignInAccount();
+  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } = useCreateUserAccount();
+  const { mutateAsync: signInAccount } = useSignInAccount();
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
@@ -50,7 +50,7 @@ const SignUpForm = () => {
 
     if( isLoggedIn) {
       form.reset();
-      navigate('/home');
+      navigate('/');
     } else {
       return toast({title: 'Sign up failed. Please try again.', variant: 'destructive'})
     }
