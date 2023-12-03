@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom"
 
 import LeftSideBar from "@/components/shared/LeftSideBar"
 import TopBar from "@/components/shared/TopBar"
+import BottomBar from "@/components/shared/BottomBar"
 
 const RootLayout = () => {
   return (
@@ -13,6 +14,7 @@ const RootLayout = () => {
         <Outlet />
       </section>
 
+      <BottomBar />
     </div>
   )
 }
