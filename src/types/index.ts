@@ -5,6 +5,14 @@ export interface INewUser {
     password: string;
 }
 
+export interface INewPost {
+    userId: string;
+    caption: string;
+    file: File[];
+    location?: string;
+    tags?: string;
+};
+
 export interface IContextType {
     user: IUser;
     isLoading: boolean;
