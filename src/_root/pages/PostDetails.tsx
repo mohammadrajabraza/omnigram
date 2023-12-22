@@ -1,4 +1,6 @@
 import Loader from "@/components/shared/Loader";
+import PostStats from "@/components/shared/PostStats";
+import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/AuthContext";
 import { useGetPostById } from "@/lib/react-query/queriesAndMutations"
 import { multiFormatDateString } from "@/lib/utils";
@@ -10,6 +12,11 @@ const PostDetails = () => {
   const { user } = useUserContext();
 
   const isUserCreator = user.id === post?.creator.$id;
+
+
+  const handleDeletePost = () => {
+
+  }
 
   return (
     <div className="post_details-container">      
@@ -55,20 +62,39 @@ const PostDetails = () => {
               </Link>
               
               {/* ---------- Post Actions ---------- */}
-              <div className="flex-center gap-4">
-                <Link 
-                  to={`/update-post/${post?.$id}`}
-                  className={`${!isUserCreator && "hidden"}`}
-                >
-                  <img
-                    src="/assets/icons/edit.svg"
-                    alt="edit"
-                    width={24}
-                    height={24}
-                  />
+              <div className="flex-center">
+                <Link to={`/update-post/${post?.$id}`} className={`${!isUserCreator && "hidden"}`}>
+                  <img src="/assets/icons/edit.svg" alt="edit" width={24} height={24} />
                 </Link>
+
+                <Button
+                  onClick={handleDeletePost}
+                  variant="ghost"
+                  className={`ghost_details-delete_btn ${!isUserCreator && "hidden"}`}
+                >
+                  <img src="/assets/icons/delete.svg" alt="delete" width={24} height={24}/>
+                </Button>
               </div>
-              </div>
+            </div>
+
+            <hr className="border w-full border-dark-4/80" />
+
+            <div className="flex flex-col flex-1 w-full small-medium lg:base-regular">
+              <p>{post?.caption}</p>
+              <ul className="flex gap-1 mt-2">
+                {post?.tags.map((tag: string) => (
+                  <li key={tag} className="text-light-3">
+                    #{tag}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* ---------- Post Stats ---------- */}
+            <div className="w-full">
+                <PostStats post={post} userId={user.id}/>
+            </div>
+
           </div>
         </div>
       }
