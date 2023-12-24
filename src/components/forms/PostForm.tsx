@@ -48,6 +48,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
     if (post && action === 'Update') {
       const updatedPost = await updatePost({
         ...values,
+        tags: values.tags === "" ? undefined : values.tags,
         postId: post.$id,
         imageId: post.imageId,
         imageUrl: post.imageUrl
@@ -61,6 +62,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
     } else {
       const newPost = await createPost({
         ...values,
+        tags: values.tags === "" ? undefined : values.tags,
         userId: user.id,
       })
   
