@@ -111,7 +111,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
             <FormItem>
               <FormLabel className="shad-form_label">Add Location </FormLabel>
               <FormControl>
-                <Input type="text" className="shad-input" {...field} />
+                <Input type="text" className="shad-input" autoComplete="off" {...field} />
               </FormControl>
               <FormMessage className="shad-form_message"/>
             </FormItem>
@@ -128,6 +128,7 @@ const PostForm = ({ post, action }: PostFormProps) => {
                   type="text"
                   className="shad-input"
                   placeholder="JS, React, NextJS"
+                  autoComplete="off"
                   {...field}
                 />
               </FormControl>
