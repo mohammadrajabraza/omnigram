@@ -1,11 +1,19 @@
+import { useState } from "react"
+// COMPONENTS 
 import GridPostList from "@/components/shared/GridPostList";
 import Loader from "@/components/shared/Loader";
-import { useGetPosts } from "@/lib/react-query/queriesAndMutations";
-import { useState } from "react"
+import SearchResults from "@/components/shared/SearchResults";
+// QUERIES & MUTATIONS
+import { useGetPosts, useSearchPosts } from "@/lib/react-query/queriesAndMutations";
+// UTILS
+import useDebounce from "@/hooks/useDebounce";
 
 const Explore = () => {
   const [searchValue, setSearchValue] = useState('');
+
+  const debouncedValue = useDebounce(searchValue, 800)
   const { data: posts, fetchNextPage, hasNextPage } = useGetPosts();
+  const { data: searchedPosts, isFetching: isSearchFetching} = useSearchPosts(debouncedValue)
 
   if (!posts) {
     return (
@@ -47,7 +55,10 @@ const Explore = () => {
       <div >
         {
           shouldShowSearchResult ? (
-            <div>Searched Posts</div>
+            <SearchResults
+              isSearchFetching={isSearchFetching}
+              searchedPosts={searchedPosts}
+            />
           ) : shouldShowPosts ? (
             <p className="text-light-4 mt-10 text-center w-full">
               End of posts
