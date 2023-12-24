@@ -196,6 +196,27 @@ export async function updatePost(post: IUpdatePost) {
     } 
 }
 
+export async function deletePost(postId: string, imageId: string) {
+    try {
+        const result = await deleteFile(imageId);
+
+        if (result?.status !== 'ok') throw Error;
+
+        const postDeleteResult = await databases.deleteDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.postCollectionId,
+            postId
+        )
+
+        if (postDeleteResult?.message !== '') throw postDeleteResult.message;
+
+        return { status: 'ok'};
+    } catch (error) {
+        console.log(error)
+        return error;
+    } 
+}
+
 export async function uploadFile(file: File) {
     try {
         const uploadedFile = await storage.createFile(
