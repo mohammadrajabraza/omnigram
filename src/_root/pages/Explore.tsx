@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useInView } from "react-intersection-observer"
 // COMPONENTS 
 import GridPostList from "@/components/shared/GridPostList";
 import Loader from "@/components/shared/Loader";
@@ -9,11 +10,16 @@ import { useGetPosts, useSearchPosts } from "@/lib/react-query/queriesAndMutatio
 import useDebounce from "@/hooks/useDebounce";
 
 const Explore = () => {
-  const [searchValue, setSearchValue] = useState('');
-
-  const debouncedValue = useDebounce(searchValue, 800)
+  const { ref, inView } = useInView();
   const { data: posts, fetchNextPage, hasNextPage } = useGetPosts();
-  const { data: searchedPosts, isFetching: isSearchFetching} = useSearchPosts(debouncedValue)
+  
+  const [searchValue, setSearchValue] = useState('');
+  const debouncedValue = useDebounce(searchValue, 800);
+  const { data: searchedPosts, isFetching: isSearchFetching } = useSearchPosts(debouncedValue);
+
+  useEffect(() => {
+    if (inView && !searchValue) fetchNextPage();
+  }, [inView, searchValue])
 
   if (!posts) {
     return (
@@ -68,6 +74,13 @@ const Explore = () => {
           ))
         }
       </div>
+
+      {/* Add loader for infinite scroll */}
+      {hasNextPage && !searchValue && (
+        <div ref={ref} className="mt-10">
+          <Loader />
+        </div>
+      )}
     </div>
   )
 }
