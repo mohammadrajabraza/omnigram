@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useInView } from "react-intersection-observer"
 // COMPONENTS 
 import GridPostList from "@/components/shared/GridPostList";
@@ -8,6 +8,7 @@ import SearchResults from "@/components/shared/SearchResults";
 import { useGetPosts, useSearchPosts } from "@/lib/react-query/queriesAndMutations";
 // UTILS
 import useDebounce from "@/hooks/useDebounce";
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 
 const Explore = () => {
   const { ref, inView } = useInView();
@@ -16,10 +17,7 @@ const Explore = () => {
   const [searchValue, setSearchValue] = useState('');
   const debouncedValue = useDebounce(searchValue, 800);
   const { data: searchedPosts, isFetching: isSearchFetching } = useSearchPosts(debouncedValue);
-
-  useEffect(() => {
-    if (inView && !searchValue) fetchNextPage();
-  }, [inView, searchValue])
+  useInfiniteScroll({ fetchNextPage, hasNextPage, inView, searchValue })
 
   if (!posts) {
     return (
@@ -28,8 +26,9 @@ const Explore = () => {
       </div>
     )
   }
+
   const shouldShowSearchResult = searchValue !== '';
-  const shouldShowPosts = !shouldShowSearchResult && 
+  const shouldShowEndNote = !shouldShowSearchResult && 
     posts?.pages.every((item) => item?.documents.length === 0);
 
   return (
@@ -65,10 +64,6 @@ const Explore = () => {
               isSearchFetching={isSearchFetching}
               searchedPosts={searchedPosts}
             />
-          ) : shouldShowPosts ? (
-            <p className="text-light-4 mt-10 text-center w-full">
-              End of posts
-            </p>
           ) : posts?.pages.map((item, index) => (
             <GridPostList key={`key-${index}`} posts={item!.documents}/>
           ))
@@ -80,6 +75,12 @@ const Explore = () => {
         <div ref={ref} className="mt-10">
           <Loader />
         </div>
+      )}
+
+      {(!hasNextPage || shouldShowEndNote) && (
+        <p className="text-light-4 mt-10 text-center w-full">
+          End of posts
+        </p>
       )}
     </div>
   )
