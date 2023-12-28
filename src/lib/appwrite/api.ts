@@ -202,7 +202,7 @@ export async function deletePost(postId: string, imageId: string) {
 
         if (result?.status !== 'ok') throw Error;
 
-        const postDeleteResult = await databases.deleteDocument(
+        const postDeleteResult: { message?: string } = await databases.deleteDocument(
             appwriteConfig.databaseId,
             appwriteConfig.postCollectionId,
             postId
