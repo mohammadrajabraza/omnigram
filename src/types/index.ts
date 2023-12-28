@@ -11,7 +11,7 @@ export interface INewPost {
     file: File[];
     location?: string;
     tags?: string;
-};
+}
 
 export type IUpdatePost = {
     postId: string;
@@ -21,7 +21,7 @@ export type IUpdatePost = {
     file: File[];
     location?: string;
     tags?: string;
-};
+}
 
 export interface IContextType {
     user: IUser;
@@ -39,10 +39,10 @@ export type IUser = {
     email: string;
     imageUrl: string;
     bio: string;
-};
+}
 
 export type INavLink = {
     imgURL: string;
     route: string;
     label: string;
-};
+}

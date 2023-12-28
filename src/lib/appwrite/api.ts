@@ -348,7 +348,7 @@ export async function getPostById(postId: string) {
 }
 
 export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
-    const queries: Array<any> = [Query.orderDesc('$updatedAt'), Query.limit(10)]
+    const queries: Array<string> = [Query.orderDesc('$updatedAt'), Query.limit(10)]
     
     // If pageParam is available add it to the query
     if (pageParam) {

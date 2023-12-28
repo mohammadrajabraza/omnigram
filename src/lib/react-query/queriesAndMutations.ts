@@ -7,6 +7,7 @@ import {
 import { INewPost, INewUser, IUpdatePost } from '@/types'
 import { createPost, createUserAccount, deletePost, deleteSavedPost, getCurrentUser, getInfinitePosts, getPostById, getRecentPosts, likePost, savePost, searchPosts, signInAccount, signOutAccount, updatePost } from '../appwrite/api'
 import { QUERY_KEYS } from './queryKeys'
+import { Models } from 'appwrite'
 
 export const useCreateUserAccount = () => {
     return useMutation({
@@ -125,9 +126,9 @@ export const useUpdatePost = () => {
 
     return useMutation({
         mutationFn: (post: IUpdatePost) => updatePost(post),
-        onSuccess: (data: any) => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
-                queryKey: [QUERY_KEYS.GET_POST_BY_ID, data?.$id]
+                queryKey: [QUERY_KEYS.GET_POST_BY_ID, (data as Models.Document)?.$id]
             })
         }
     })
@@ -161,7 +162,7 @@ export const useGetPosts = () => {
     return useInfiniteQuery({
         queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
         queryFn: getInfinitePosts,
-        // @ts-ignore
+        // @ts-expect-error: Due to the Appwrite API specification 
         getNextPageParam: (lastPage) => {
             if (lastPage && lastPage.documents.length === 0) return null;
 
