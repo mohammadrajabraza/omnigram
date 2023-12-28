@@ -4,6 +4,7 @@ import { useInView } from "react-intersection-observer"
 import GridPostList from "@/components/shared/GridPostList";
 import Loader from "@/components/shared/Loader";
 import SearchResults from "@/components/shared/SearchResults";
+import { Input } from "@/components/ui/input";
 // QUERIES & MUTATIONS
 import { useGetPosts, useSearchPosts } from "@/lib/react-query/queriesAndMutations";
 // UTILS
@@ -37,7 +38,7 @@ const Explore = () => {
         <h2 className="h3-bold md:h2-bold w-full">Search Posts</h2>
         <div className="flex gap-1 md:gap-3 px-4 w-full rounded-lg bg-dark-4">
           <img src="/assets/icons/search.svg" alt="search" width={24} height={24} />
-          <input 
+          <Input 
             type="text"
             placeholder="Search"
             className="explore-search"
