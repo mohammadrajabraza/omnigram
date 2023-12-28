@@ -77,7 +77,7 @@ const Explore = () => {
         </div>
       )}
 
-      {(!hasNextPage || shouldShowEndNote) && (
+      {((!hasNextPage || shouldShowEndNote) && !searchValue) && (
         <p className="text-light-4 mt-10 text-center w-full">
           End of posts
         </p>
