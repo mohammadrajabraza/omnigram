@@ -1,8 +1,12 @@
-import { useDeleteSavedPost, useGetCurrentUser, useLikePost, useSavePost } from "@/lib/react-query/queriesAndMutations";
-import { checkIsLiked } from "@/lib/utils";
-import { Models } from "appwrite";
 import React, { useEffect, useState } from "react";
+import { Models } from "appwrite";
+// COMPONENTS
 import Loader from "./Loader";
+// QUERIES & MUTATIONS
+import { useDeleteSavedPost, useLikePost, useSavePost } from "@/lib/react-query/queriesAndMutations/posts";
+import { useGetCurrentUser } from "@/lib/react-query/queriesAndMutations/users";
+// UTILS
+import { checkIsLiked } from "@/lib/utils";
 
 interface PostStatsProps {
   post?: Models.Document;

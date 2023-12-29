@@ -1,8 +1,11 @@
-import { useUserContext } from "@/context/AuthContext";
-import { multiFormatDateString } from "@/lib/utils";
 import { Models } from "appwrite";
 import { Link } from "react-router-dom";
+// COMPONENTS
 import PostStats from "./PostStats";
+// CONTEXTS
+import { useUserContext } from "@/context/AuthContext";
+// UTILS
+import { multiFormatDateString } from "@/lib/utils";
 
 interface PostCardProps {
   post: Models.Document;

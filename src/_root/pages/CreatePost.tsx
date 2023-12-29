@@ -1,3 +1,4 @@
+// COMPONENTS
 import PostForm from "@/components/forms/PostForm"
 
 const CreatePost = () => {

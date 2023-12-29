@@ -2,14 +2,17 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
-
+// COMPONENTS
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useToast } from "@/components/ui/use-toast"
 import { Input } from "@/components/ui/input"
 import Loader from "@/components/shared/Loader"
+// CONTEXTS
 import { useUserContext } from "@/context/AuthContext"
-import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations"
+// QUERIES & MUTATIONS
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations/auth"
+// VALIDATIONS
 import { SignUpValidation } from "@/lib/validation"
 
 const SignUpForm = () => {

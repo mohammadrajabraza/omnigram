@@ -6,7 +6,7 @@ import Loader from "@/components/shared/Loader";
 import SearchResults from "@/components/shared/SearchResults";
 import { Input } from "@/components/ui/input";
 // QUERIES & MUTATIONS
-import { useGetPosts, useSearchPosts } from "@/lib/react-query/queriesAndMutations";
+import { useGetPosts, useSearchPosts } from "@/lib/react-query/queriesAndMutations/posts";
 // UTILS
 import useDebounce from "@/hooks/useDebounce";
 import useInfiniteScroll from "@/hooks/useInfiniteScroll";

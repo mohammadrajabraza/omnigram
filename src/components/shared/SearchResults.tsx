@@ -1,4 +1,5 @@
-import { Models } from "appwrite"
+import { Models } from "appwrite";
+// COMPONENTS
 import Loader from "./Loader";
 import GridPostList from "./GridPostList";
 

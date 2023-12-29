@@ -1,5 +1,6 @@
-import { useUserContext } from "@/context/AuthContext";
 import { Outlet, Navigate } from "react-router-dom"
+// CONTEXTS
+import { useUserContext } from "@/context/AuthContext";
 
 const AuthLayout = () => {
   const { user } = useUserContext();

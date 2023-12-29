@@ -1,10 +1,14 @@
+import { Link, useNavigate, useParams } from "react-router-dom"
+// COMPONENTS
 import Loader from "@/components/shared/Loader";
 import PostStats from "@/components/shared/PostStats";
 import { Button } from "@/components/ui/button";
+// CONTEXTS
 import { useUserContext } from "@/context/AuthContext";
-import { useDeletePost, useGetPostById } from "@/lib/react-query/queriesAndMutations"
+// QUERIES & MUTATIONS
+import { useDeletePost, useGetPostById } from "@/lib/react-query/queriesAndMutations/posts"
+// UTILS
 import { multiFormatDateString } from "@/lib/utils";
-import { Link, useNavigate, useParams } from "react-router-dom"
 
 const PostDetails = () => {
   const { id } = useParams();

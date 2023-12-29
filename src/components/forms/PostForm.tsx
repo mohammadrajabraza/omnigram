@@ -3,7 +3,7 @@ import { Models } from "appwrite"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
- 
+// COMPONENTS
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -17,9 +17,12 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "../ui/textarea"
 import { useToast } from "../ui/use-toast"
 import FileUploader from "../shared/FileUploader"
-import { PostValidation } from "@/lib/validation"
+// CONTEXTS
 import { useUserContext } from "@/context/AuthContext"
-import { useCreatePost, useUpdatePost } from "@/lib/react-query/queriesAndMutations"
+// QUERIES & MUTATIONS
+import { useCreatePost, useUpdatePost } from "@/lib/react-query/queriesAndMutations/posts"
+// VALIDATIONS
+import { PostValidation } from "@/lib/validation"
 
 interface PostFormProps {
   post?: Models.Document;
