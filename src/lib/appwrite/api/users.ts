@@ -13,6 +13,30 @@ export function getUsers() {
     return users;
 }
 
+// Get users in infinite scroll fashion
+export async function getInfiniteUsers({ pageParam }: { pageParam: number }) {
+    const queries: Array<string> = [Query.orderDesc('$updatedAt'), Query.limit(10)]
+    
+    // If pageParam is available add it to the query
+    if (pageParam) {
+        queries.push(Query.cursorAfter(pageParam.toString()))
+    }
+    
+    try {
+        const users = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            queries
+        )
+
+        if (!users) throw Error;
+
+        return users;
+    } catch (error) {
+        console.log(Error);
+    }
+}
+
 export async function getCurrentUser() {
     try {
         const currentAccount = await account.get();
