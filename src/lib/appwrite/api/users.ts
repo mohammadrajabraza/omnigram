@@ -2,10 +2,18 @@ import { ID, Query } from "appwrite";
 // APPWRITE CONFIG
 import { account, appwriteConfig, databases } from "@/lib/appwrite/config";
 
-export function getUsers() {
+export function getUsers(limit?: number) {
+    const queries: Array<string> = [Query.orderDesc('$updatedAt')];
+    
+    // If limit is available add it to the query
+    if (limit) {
+        queries.push(Query.limit(limit))
+    }
+
     const users = databases.listDocuments(
         appwriteConfig.databaseId,
         appwriteConfig.userCollectionId,
+        queries,
     )
 
     if (!users) throw Error;
