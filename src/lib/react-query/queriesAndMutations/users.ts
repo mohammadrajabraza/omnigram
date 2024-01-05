@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 // APIS
-import { getCurrentUser, getInfiniteUsers, getUsers } from "@/lib/appwrite/api/users"
+import { getCurrentUser, getInfiniteUsers, getUserById, getUsers } from "@/lib/appwrite/api/users"
 import { QUERY_KEYS } from "@/lib/react-query/queryKeys"
 
 export const useGetCurrentUser = () => {
@@ -29,5 +29,13 @@ export const useGetInfiniteUsers = () => {
 
             return lastId;
         }
+    })
+}
+
+export const useGetUserById = (userId: string) => {
+    return useQuery({
+        queryKey: [QUERY_KEYS.GET_USER_BY_ID],
+        queryFn: () => getUserById(userId),
+        enabled: !!userId
     })
 }

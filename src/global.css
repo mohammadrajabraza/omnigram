@@ -178,7 +178,8 @@
   }
 
   .profile-tab {
-    @apply flex-center gap-3 py-4 w-48 bg-dark-2  transition flex-1 xl:flex-initial;
+    @apply flex-center gap-3 py-3 w-36 lg:w-48 bg-dark-2 first:bg-dark-3 hover:bg-dark-3 transition flex-1 xl:flex-initial 
+    first:rounded-s-[10px] last:rounded-e-[10px] border-[1px] border-dark-3 ;
   }
 
   /* Saved */
@@ -268,6 +269,10 @@
   /* Button */
   .shad-button_primary {
     @apply bg-primary-500 hover:bg-primary-500 text-light-1 flex gap-2 !important;
+  }
+
+  .shad-button_light {
+    @apply bg-light-2 hover:bg-light-1 text-dark-2 flex gap-2 !important;
   }
 
   .shad-button_dark_4 {

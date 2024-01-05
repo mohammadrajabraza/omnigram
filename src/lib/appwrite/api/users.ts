@@ -45,6 +45,23 @@ export async function getInfiniteUsers({ pageParam }: { pageParam: number }) {
     }
 }
 
+// Find a user by ID
+export async function getUserById(userId: string) {
+    try {
+        const user = await databases.getDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            userId
+        )
+
+        if (!user) throw Error;
+
+        return user
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export async function getCurrentUser() {
     try {
         const currentAccount = await account.get();
