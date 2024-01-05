@@ -1,5 +1,6 @@
 import { Models } from "appwrite";
 import { cva, type VariantProps } from "class-variance-authority"
+import { Link } from "react-router-dom";
 // COMPONENTS
 import { Button } from "../ui/button";
 // UTILS
@@ -27,18 +28,20 @@ interface UserCardProps
 }
 
 const UserCard = ({ user, size, className } : UserCardProps) => {
-  const { name, username, imageUrl} = user;
+  const { $id, name, username, imageUrl} = user;
   const isSmallVariant = size === "sm";
 
   return (
-    <div className={cn(userCardVariants({ size, className }))}>
-      <img src={imageUrl} alt="user" className={`rounded-full ${isSmallVariant ? "w-[54px] h-[54px]" : "w-[90px] h-[90px]"}`}/>
-        <div className="flex-center flex-col">
-          <h3 className={`text-light-1 ${isSmallVariant ? "small-semibold" : "h3-bold"}`}>{name}</h3>
-          <p className={`text-light-3 ${isSmallVariant ? "tiny-medium" : "body-medium mt-2"}`}>{`@${username}`}</p>
-        </div>
-      <Button className={`shad-button_primary ${isSmallVariant ? "h-7.5 py-1.5 px-4 subtle-semibold" : "px-5 py2.5"}`} size={size}>Follow</Button>
-    </div>
+    <Link to={`/profile/${$id}`}>
+      <div className={cn(userCardVariants({ size, className }))}>
+        <img src={imageUrl} alt="user" className={`rounded-full ${isSmallVariant ? "w-[54px] h-[54px]" : "w-[90px] h-[90px]"}`}/>
+          <div className="flex-center flex-col">
+            <h3 className={`text-light-1 ${isSmallVariant ? "small-semibold" : "h3-bold"}`}>{name}</h3>
+            <p className={`text-light-3 ${isSmallVariant ? "tiny-medium" : "body-medium mt-2"}`}>{`@${username}`}</p>
+          </div>
+        <Button className={`shad-button_primary ${isSmallVariant ? "h-7.5 py-1.5 px-4 subtle-semibold" : "px-5 py2.5"}`} size={size}>Follow</Button>
+      </div>
+    </Link>
   )
 }
 
