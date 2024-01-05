@@ -43,7 +43,7 @@ export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
     }
 }
 
-// Find a user by ID
+// Find a post by ID
 export async function getPostById(postId: string) {
     try {
         const post = await databases.getDocument(
