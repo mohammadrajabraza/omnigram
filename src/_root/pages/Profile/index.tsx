@@ -1,19 +1,24 @@
-import { useParams } from "react-router-dom";
+import { Route, Routes, useLocation, useParams } from "react-router-dom";
 // COMPONENTS
+import CustomTabs from "@/components/shared/CustomTabs";
 import GridPostList from "@/components/shared/GridPostList"
 import Loader from "@/components/shared/Loader";
 import { Button } from "@/components/ui/button";
+// CONFIG
+import { tabsDetails } from "./config";
 // CONTEXTS
 import { useUserContext } from "@/context/AuthContext";
 // QUERIES & MUTATIONS
 import { useGetUserById } from "@/lib/react-query/queriesAndMutations/users";
 
 const Profile = () => {
+  const { pathname } = useLocation();
   const { id } = useParams();
   const { data: user, isFetching } = useGetUserById(id || "");
 
   const { user: loggedInUser } = useUserContext();
   const isLoggedInUser = loggedInUser.id === id;
+  const activeTab = pathname.split(`/profile/${id}`)[1]
   
   if (!user || isFetching) {
     return (
@@ -83,20 +88,8 @@ const Profile = () => {
       
       {/* ---------- Filters ---------- */}
       <div className="flex-between w-full max-w-5xl cursor-pointer">
-        <div className="flex">
-          <div className="profile-tab">
-            <img src="/assets/icons/gallery.svg" alt="gallery" width={20} height={20} />
-            Posts
-          </div>
-          <div className="profile-tab">
-          <img src="/assets/icons/reel.svg" alt="reel" width={20} height={20} />
-            Reels
-          </div>
-          <div className="profile-tab">
-          <img src="/assets/icons/tag.svg" alt="tag" width={20} height={20} />
-            Tagged
-          </div>
-        </div>
+        {/* Tabs */}
+        <CustomTabs tabsDetails={tabsDetails} activeTab={activeTab}/>
 
         <div className="flex-center gap-3 bg-dark-3 rounded-xl px-4 py-3 cursor-pointer">
           <p className="small-medium md:base-medium text-light-2">All</p>
@@ -105,11 +98,10 @@ const Profile = () => {
       </div>
 
       {/* ---------- Posts Grid ---------- */}
-      <div className="w-full">
-        {
-          <GridPostList posts={user.posts} showStats={false} showUser={false}/>
-        }
-      </div>
+      <Routes>
+        <Route index element={<GridPostList posts={user.posts} showStats={false} showUser={false}/>} />
+        <Route path="/liked-posts" element={<GridPostList posts={user.liked} showStats={false} showUser={false}/>} />
+      </Routes>
 
       {/* ---------- End Notes ---------- */}
       <p className="text-light-4 mt-10 text-center w-full">
