@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation, useParams } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom";
 // COMPONENTS
 import CustomTabs from "@/components/shared/CustomTabs";
 import GridPostList from "@/components/shared/GridPostList"
@@ -12,6 +12,7 @@ import { useUserContext } from "@/context/AuthContext";
 import { useGetUserById } from "@/lib/react-query/queriesAndMutations/users";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { id } = useParams();
   const { data: user, isFetching } = useGetUserById(id || "");
@@ -20,6 +21,10 @@ const Profile = () => {
   const isLoggedInUser = loggedInUser.id === id;
   const activeTab = pathname.split(`/profile/${id}`)[1]
   
+  const handleEditProfileClick = () => {
+    navigate(`/update-profile/${loggedInUser.id}`)
+  }
+
   if (!user || isFetching) {
     return (
       <div className="flex-center w-full h-full">
@@ -44,7 +49,10 @@ const Profile = () => {
             {/* ---------- Actions ---------- */}
             {
               isLoggedInUser ? (
-                <Button className="shad-button_dark_4 py-1">
+                <Button 
+                  className="shad-button_dark_4 py-1"
+                  onClick={handleEditProfileClick}
+                >
                   <img src="/assets/icons/profile-edit.svg" alt="edit" width={16} height={16} />
                   Edit Profile
                 </Button>
