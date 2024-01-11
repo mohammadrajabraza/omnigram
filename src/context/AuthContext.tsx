@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getCurrentUser } from '@/lib/appwrite/api/users';
 // TYPES
 import { IContextType, IUser } from '@/types';
+import { useGetCurrentUser } from '@/lib/react-query/queriesAndMutations/users';
 
 export const INITIAL_USER = {
     id: '',
@@ -29,6 +30,7 @@ const AuthProvider = ({ children } : { children: React.ReactNode }) => {
     const [user, setUser] = useState<IUser>(INITIAL_USER);
     const [isLoading, setIsLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const {  } = useGetCurrentUser();
 
     const navigate = useNavigate();
 

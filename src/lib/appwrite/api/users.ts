@@ -1,6 +1,8 @@
 import { ID, Query } from "appwrite";
 // APPWRITE CONFIG
 import { account, appwriteConfig, databases } from "@/lib/appwrite/config";
+import { IUpdateUser } from "@/types";
+import { deleteFile, getFilePreview, uploadFile } from "./files";
 
 export function getUsers(limit?: number) {
     const queries: Array<string> = [Query.orderDesc('$updatedAt')];
@@ -100,5 +102,58 @@ export async function saveUserToDB(user: {
         return newUser
     } catch (error) {
         console.log(error);
+    }
+}
+
+export async function updateUserProfile(user: IUpdateUser) {
+    const hasFileToUpload = !!user.file && user.file.length > 0;
+    try {
+        let image = {
+            imageUrl: user.imageUrl,
+            imageId: user.imageId,
+        }
+
+        if (hasFileToUpload) {
+            console.log('File to upload', user.file)
+            // Upload file to appwrite storage
+            const uploadedFile = await uploadFile(user.file![0]);
+    
+            console.log({uploadedFile})
+            if (!uploadedFile) throw Error;
+
+            // Get file url
+            const fileUrl = getFilePreview(uploadedFile.$id);
+            
+            console.log({fileUrl})
+            if (!fileUrl) {
+                await deleteFile(uploadedFile.$id);
+                throw Error;
+            }
+
+            image = { ...image, imageUrl: fileUrl, imageId: uploadedFile.$id }
+        }
+
+        console.log({image})
+        const updatedUser = databases.updateDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            user.id,
+            {
+                name: user.name,
+                username: user.username,
+                bio: user.bio,
+                imageUrl: image.imageUrl,
+                imageId: image.imageId,
+            },
+        )    
+
+        if (!updatedUser) {
+            throw Error;
+        }
+
+        return updatedUser;
+    } catch (error) {
+        console.log(error)
+        return error;
     }
 }

@@ -13,7 +13,7 @@ export interface INewPost {
     tags?: string;
 }
 
-export type IUpdatePost = {
+export interface IUpdatePost {
     postId: string;
     caption: string;
     imageId: string;
@@ -32,7 +32,7 @@ export interface IContextType {
     checkAuthUser: () =>  Promise<boolean>;
 }
 
-export type IUser = {
+export interface IUser {
     id: string;
     name: string;
     username: string;
@@ -41,7 +41,18 @@ export type IUser = {
     bio: string;
 }
 
-export type INavLink = {
+export interface IUpdateUser {
+    id: string;
+    name: string;
+    username: string;
+    email: string;
+    bio: string;
+    file?: Array<File>;
+    imageId: string;
+    imageUrl: URL;
+}
+
+export interface INavLink {
     imgURL: string;
     route: string;
     label: string;
