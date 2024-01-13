@@ -1,6 +1,6 @@
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 // COMPONENTS
 import { Button } from "@/components/ui/button"
@@ -18,7 +18,9 @@ import { SignInValidation } from "@/lib/validation"
 const SignInForm = () => {
   const { toast } = useToast();
   const { checkAuthUser } = useUserContext();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const { mutateAsync: signInAccount, isPending: isSigningIn} = useSignInAccount();
 
@@ -45,7 +47,7 @@ const SignInForm = () => {
 
     if( isLoggedIn) {
       form.reset();
-      navigate('/');
+      navigate(from, { replace: true });
     } else {
       return toast({title: 'Sign up failed. Please try again.', variant: 'destructive'})
     }

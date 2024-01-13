@@ -56,4 +56,5 @@ export interface INavLink {
     imgURL: string;
     route: string;
     label: string;
+    isProtected: boolean;
 }

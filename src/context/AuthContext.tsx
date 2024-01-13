@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
 // APIS
 import { getCurrentUser } from '@/lib/appwrite/api/users';
+// QUERIES & MUTATIONS
+import { useGetCurrentUser } from '@/lib/react-query/queriesAndMutations/users';
 // TYPES
 import { IContextType, IUser } from '@/types';
-import { useGetCurrentUser } from '@/lib/react-query/queriesAndMutations/users';
 
 export const INITIAL_USER = {
     id: '',
@@ -32,13 +32,7 @@ const AuthProvider = ({ children } : { children: React.ReactNode }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const {  } = useGetCurrentUser();
 
-    const navigate = useNavigate();
-
     useEffect(() => {
-        // localStorage.getItem('cookieFallback') === null
-        if (
-            localStorage.getItem('cookieFallback') === '[]'
-        ) navigate('/sign-in')
 
         checkAuthUser();
     }, [])
