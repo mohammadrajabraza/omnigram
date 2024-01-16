@@ -28,30 +28,35 @@ const AuthContext = createContext<IContextType>(INITIAL_STATE);
 
 const AuthProvider = ({ children } : { children: React.ReactNode }) => {
     const [user, setUser] = useState<IUser>(INITIAL_USER);
-    const [isLoading, setIsLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const {  } = useGetCurrentUser();
+    const { data: currentUser , status, isFetching, isLoading, isRefetching } = useGetCurrentUser();
 
     useEffect(() => {
-
-        checkAuthUser();
-    }, [])
+        if (status === "success" && currentUser) {
+            // Update the user state with the currentUser from the hook
+            setUser({
+                id: currentUser.$id,
+                name: currentUser.name,
+                username: currentUser.username,
+                email: currentUser.email,
+                imageUrl: currentUser.imageUrl,
+                bio: currentUser.bio,
+            });
+            // Set the isAuthenticated state to true
+            setIsAuthenticated(true);
+        } else {
+            // Reset the user state to the initial value
+            setUser(INITIAL_USER);
+            // Set the isAuthenticated state to false
+            setIsAuthenticated(false);
+        }
+    }, [currentUser, status]);
 
     const checkAuthUser = async () => {
         try {
             const currentAccount = await getCurrentUser(); 
 
             if (currentAccount) {
-                setUser({
-                    id: currentAccount.$id,
-                    name: currentAccount.name,
-                    username: currentAccount.username,
-                    email: currentAccount.email,
-                    imageUrl: currentAccount.imageUrl,
-                    bio: currentAccount.bio,
-                })
-
-                setIsAuthenticated(true);
                 return true;
             }
 
@@ -60,15 +65,13 @@ const AuthProvider = ({ children } : { children: React.ReactNode }) => {
         } catch (error) {
             console.log(error)
             return false;
-        } finally {
-            setIsLoading(false)
         }
     };
 
     const value = {
         user,
         setUser,
-        isLoading,
+        isLoading: status === 'pending' || isLoading || isFetching || isRefetching,
         isAuthenticated,
         setIsAuthenticated,
         checkAuthUser,

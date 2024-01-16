@@ -50,10 +50,12 @@ export const useUpdateUserProfile = () => {
         onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: [
-                    QUERY_KEYS.GET_CURRENT_USER,
                     QUERY_KEYS.GET_USER_BY_ID,
                     (data as Models.Document)?.$id
                 ]
+            }),
+            queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.GET_CURRENT_USER],
             })
         }
     })

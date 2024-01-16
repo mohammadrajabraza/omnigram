@@ -1,8 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 // APPWRITE CONFIG
 import { createUserAccount, signInAccount, signOutAccount } from "@/lib/appwrite/api/auth";
 // TYPES
 import { INewUser } from "@/types";
+import { QUERY_KEYS } from "../queryKeys";
 
 export const useCreateUserAccount = () => {
     return useMutation({
@@ -11,11 +12,18 @@ export const useCreateUserAccount = () => {
 }
 
 export const useSignInAccount = () => {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: (user: {
             email: string;
             password: string;
-        }) => signInAccount(user)
+        }) => signInAccount(user),
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: [QUERY_KEYS.GET_CURRENT_USER],
+            })
+        }
     })
 }
 
