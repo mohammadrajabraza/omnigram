@@ -1,8 +1,10 @@
+import { SyntheticEvent } from "react"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Link, useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 // COMPONENTS
+import SignInForm from "./SignInForm"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { useToast } from "@/components/ui/use-toast"
@@ -10,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import Loader from "@/components/shared/Loader"
 // CONTEXTS
 import { useUserContext } from "@/context/AuthContext"
+import { useDialog } from "@/context/DialogContext"
 // QUERIES & MUTATIONS
 import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations/auth"
 // VALIDATIONS
@@ -18,6 +21,7 @@ import { SignUpValidation } from "@/lib/validation"
 const SignUpForm = () => {
   const { toast } = useToast();
   const { checkAuthUser } = useUserContext();
+  const { state , dispatch } = useDialog();
   const navigate = useNavigate(); 
 
   const { mutateAsync: createUserAccount, isPending: isCreatingAccount } = useCreateUserAccount();
@@ -51,11 +55,27 @@ const SignUpForm = () => {
 
     const isLoggedIn = await checkAuthUser();
 
-    if( isLoggedIn) {
-      form.reset();
-      navigate('/');
+    if(isLoggedIn) {
+      if (state.isOpen) {
+        dispatch({ type: "CLOSE_DIALOG" })
+      } else {
+        form.reset();
+        navigate('/');
+      }
     } else {
       return toast({title: 'Sign up failed. Please try again.', variant: 'destructive'})
+    }
+  }
+
+  const handleDialogLoginClick = (e: SyntheticEvent) => {
+    e.preventDefault();
+    if (state.isOpen) {
+      dispatch({
+        type: 'OPEN_DIALOG',
+        payload: {
+          children: <SignInForm/>,
+        }
+      })
     }
   }
 
@@ -133,7 +153,13 @@ const SignUpForm = () => {
           </Button>
           <p className="text-small-regular text-light-2 text-center mt-2">
               Already have an account?
-              <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1">Log in</Link>
+              {
+                state.isOpen ? (
+                  <Button className="shad-button_link" onClick={handleDialogLoginClick}>Log in</Button>
+                ) : (
+                  <Link to="/sign-in" className="text-primary-500 text-small-semibold ml-1">Log in</Link>
+                )
+              }
           </p>
         </form>
       </div>
