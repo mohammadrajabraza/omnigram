@@ -271,6 +271,10 @@
     @apply bg-primary-500 hover:bg-primary-500 text-light-1 flex gap-2 !important;
   }
 
+  .shad-button_link {
+    @apply bg-transparent text-primary-500 !important;
+  }
+
   .shad-button_light {
     @apply bg-light-2 hover:bg-light-1 text-dark-2 flex gap-2 !important;
   }
@@ -281,5 +285,9 @@
 
   .shad-button_ghost {
     @apply flex gap-4 items-center justify-start hover:bg-transparent hover:text-white !important;
+  }
+
+  .shad-dialog {
+    @apply bg-dark-1 flex flex-1 flex-center max-w-2xl max-sm:max-w-sm py-10 mx-auto border-2 border-dark-4  !important;
   }
 }
