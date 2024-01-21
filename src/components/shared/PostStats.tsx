@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Models } from "appwrite";
 // COMPONENTS
 import Loader from "./Loader";
+// HOOKS
+import useAuth from "@/hooks/useAuth";
 // QUERIES & MUTATIONS
 import { useDeleteSavedPost, useLikePost, useSavePost } from "@/lib/react-query/queriesAndMutations/posts";
 import { useGetCurrentUser } from "@/lib/react-query/queriesAndMutations/users";
@@ -32,7 +34,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
     setIsSaved(!!savedPostRecord)
   }, [savedPostRecord])
 
-  const handleLikePost = (e: React.MouseEvent) => {
+  const handleLikePost = useAuth((e: React.SyntheticEvent) => {
     e.stopPropagation();
 
     let newLikes = [...likes]
@@ -48,9 +50,9 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
 
     setLikes(newLikes);
     likePost({postId: post?.$id || '', likesArray: newLikes})
-  }
+  })
 
-  const handleSavePost = (e: React.MouseEvent) => {
+  const handleSavePost = useAuth((e: React.SyntheticEvent) => {
     e.stopPropagation();
 
     if (savedPostRecord) {
@@ -60,7 +62,7 @@ const PostStats = ({ post, userId }: PostStatsProps) => {
       setIsSaved(true);
       savePost({postId: post?.$id || '', userId: userId})
     }
-  }
+  })
 
   return (
     <div className="flex justify-between items-center z-20">
