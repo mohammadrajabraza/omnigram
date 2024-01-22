@@ -39,6 +39,7 @@ export interface IUser {
     email: string;
     imageUrl: string;
     bio: string;
+    emailVerified: boolean;
 }
 
 export interface IUpdateUser {

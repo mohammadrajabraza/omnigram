@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 // APIS
 import { getCurrentUser } from '@/lib/appwrite/api/users';
 // QUERIES & MUTATIONS
-import { useGetCurrentUser } from '@/lib/react-query/queriesAndMutations/users';
+import { useGetCurrentAccount, useGetCurrentUser } from '@/lib/react-query/queriesAndMutations/users';
 // TYPES
 import { IContextType, IUser } from '@/types';
 
@@ -12,7 +12,8 @@ export const INITIAL_USER = {
     username: '',
     email: '',
     imageUrl: '',
-    bio: ''
+    bio: '',
+    emailVerified: false,
 }
 
 const INITIAL_STATE = {
@@ -29,10 +30,11 @@ const AuthContext = createContext<IContextType>(INITIAL_STATE);
 const AuthProvider = ({ children } : { children: React.ReactNode }) => {
     const [user, setUser] = useState<IUser>(INITIAL_USER);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const { data: currentUser , status, isFetching, isLoading, isRefetching } = useGetCurrentUser();
+    const { data: currentUser , status: userStatus, isFetching, isLoading, isRefetching } = useGetCurrentUser();
+    const { data: currentAccount, status: accountStatus } = useGetCurrentAccount();
 
     useEffect(() => {
-        if (status === "success" && currentUser) {
+        if (userStatus === "success" && currentUser && accountStatus === "success" && currentAccount) {
             // Update the user state with the currentUser from the hook
             setUser({
                 id: currentUser.$id,
@@ -41,6 +43,7 @@ const AuthProvider = ({ children } : { children: React.ReactNode }) => {
                 email: currentUser.email,
                 imageUrl: currentUser.imageUrl,
                 bio: currentUser.bio,
+                emailVerified: currentAccount?.emailVerification
             });
             // Set the isAuthenticated state to true
             setIsAuthenticated(true);
@@ -50,7 +53,7 @@ const AuthProvider = ({ children } : { children: React.ReactNode }) => {
             // Set the isAuthenticated state to false
             setIsAuthenticated(false);
         }
-    }, [currentUser, status]);
+    }, [currentUser, userStatus, currentAccount, accountStatus]);
 
     const checkAuthUser = async () => {
         try {
