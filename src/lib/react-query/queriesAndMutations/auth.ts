@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 // APPWRITE CONFIG
-import { createUserAccount, signInAccount, signOutAccount } from "@/lib/appwrite/api/auth";
+import { createUserAccount, requestVerification, signInAccount, signOutAccount } from "@/lib/appwrite/api/auth";
 // TYPES
 import { INewUser } from "@/types";
 import { QUERY_KEYS } from "../queryKeys";
@@ -30,5 +30,11 @@ export const useSignInAccount = () => {
 export const useSignOutAccount = () => {
     return useMutation({
         mutationFn: signOutAccount
+    })
+}
+
+export const useRequestVerification = () => {
+    return useMutation({
+        mutationFn: requestVerification
     })
 }

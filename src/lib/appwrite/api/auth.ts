@@ -1,4 +1,4 @@
-import { ID } from "appwrite";
+import { ID, Models } from "appwrite";
 // APPWRITE CONFIG
 import { account, avatars } from "@/lib/appwrite/config";
 // APIS
@@ -55,4 +55,15 @@ export async function signOutAccount() {
     } catch (error) {
         console.log(error)
     }
+}
+
+export async function requestVerification(): Promise<Models.Token> {
+    try {
+        const result = await account.createVerification(`${import.meta.env.VITE_APP_BASE_URL}/verification`)
+
+        return result;
+    } catch (error) {
+        console.log(error)
+        throw error;
+    } 
 }
