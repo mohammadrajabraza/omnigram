@@ -1,9 +1,16 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 // APIS
-import { getCurrentUser, getInfiniteUsers, getUserById, getUsers, updateUserProfile } from "@/lib/appwrite/api/users"
+import { getCurrentAccount, getCurrentUser, getInfiniteUsers, getUserById, getUsers, updateUserProfile } from "@/lib/appwrite/api/users"
 import { QUERY_KEYS } from "@/lib/react-query/queryKeys"
 import { IUpdateUser } from "@/types"
 import { Models } from "appwrite"
+
+export const useGetCurrentAccount = () => {
+    return useQuery({
+        queryKey: [QUERY_KEYS.GET_CURRENT_ACCOUNT],
+        queryFn: getCurrentAccount
+    })
+}
 
 export const useGetCurrentUser = () => {
     return useQuery({

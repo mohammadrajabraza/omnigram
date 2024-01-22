@@ -1,5 +1,6 @@
 export enum QUERY_KEYS {
     // USER KEYS
+    GET_CURRENT_ACCOUNT = 'getCurrentAccount',
     GET_CURRENT_USER = 'getCurrentUser',
     GET_USERS = "getUsers",
     GET_INFINITE_USERS = "getInfiniteUsers",

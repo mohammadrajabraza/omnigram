@@ -1,8 +1,21 @@
-import { ID, Query } from "appwrite";
+import { ID, Models, Query } from "appwrite";
 // APPWRITE CONFIG
 import { account, appwriteConfig, databases } from "@/lib/appwrite/config";
 import { IUpdateUser } from "@/types";
 import { deleteFile, getFilePreview, uploadFile } from "./files";
+
+export async function getCurrentAccount(): Promise<Models.User<Models.Preferences>> {
+    try {
+        const currentAccount = await account.get();
+
+        if (!currentAccount) throw Error;
+
+        return currentAccount;
+    } catch (error) {
+        console.log(error)
+        throw new Error(`Couldn't find account!`);
+    }
+}
 
 export function getUsers(limit?: number) {
     const queries: Array<string> = [Query.orderDesc('$updatedAt')];
@@ -66,9 +79,7 @@ export async function getUserById(userId: string) {
 
 export async function getCurrentUser() {
     try {
-        const currentAccount = await account.get();
-
-        if (!currentAccount) throw Error;
+        const currentAccount = await getCurrentAccount();
 
         const currentUser = await databases.listDocuments(
             appwriteConfig.databaseId,
